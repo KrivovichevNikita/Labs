@@ -1,0 +1,105 @@
+#include <iostream>
+
+struct list {
+    int data;
+    list* next;
+};
+
+list* newlist() {
+    list* sfl;
+    sfl = nullptr;
+    return sfl;
+}
+
+void push(list** sfl, int d) {
+    list* curr;
+    curr = new list;
+    curr->data = d;
+    curr->next = *sfl;
+    *sfl = curr;
+}
+
+void reverse(struct list** sfl)
+{
+    if (*sfl == NULL) return;
+    list* curr;
+    list* next;
+    list* prev = NULL;
+    curr = *sfl;
+    while (curr != NULL)
+    {
+        next = curr->next;
+        curr->next = prev;
+        prev = curr;
+        curr = next;
+    }
+    *sfl = prev;
+}
+
+list* newlist(list* sfl) {
+    list* b = newlist();
+    list* curr =sfl;
+    while (curr != NULL)
+    {
+        push(&b, curr->data);
+        curr = curr->next;
+    }
+    reverse(&b);
+    return b;
+}
+
+int pop(list** sfl) {
+    list*curr;
+    int n;
+    if (*sfl != NULL) {
+        curr = *sfl;
+        n = (*sfl)->data;
+        *sfl = (*sfl)->next;
+        delete curr;
+        return n;
+    }
+    else
+        return NULL;
+}
+
+bool empty(list** sfl) {
+    list* curr;
+    int n;
+    if (*sfl == NULL) { return true; }
+    else
+        return false;
+}
+
+int peak(list** sfl) {
+    list* curr;
+    int n;
+    if (*sfl != NULL) {
+        curr = *sfl;
+        n = (*sfl)->data;
+        return n;
+    }
+    else
+        return NULL;
+}
+
+void delete_list(list** sfl) {
+    list* curr = *sfl;
+    while (*sfl != NULL) {
+        pop(sfl);
+    }
+}
+
+int main()
+{ 
+    list* a = newlist();
+    for (int i=1; i<7; i++){ push(&a, i); }
+    std::cout << peak(&a) <<" ";
+    std::cout << empty(&a) <<" ";
+    list* b = newlist(a);
+    reverse(&a);
+    for (int i = 1; i < 7; i++) { std::cout << pop(&a); }
+    delete_list(&a);
+    std::cout << " " << empty(&a)<< " ";
+    for (int i = 1; i < 7; i++) { std::cout << pop(&b); }
+    return 0;
+}
